@@ -1,14 +1,17 @@
 package pdf
 
+/********** outdated **********************
 import org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib
-
+*******************************************/
+import grails.web.mapping.LinkGenerator
 /*
   A simple taglib for producing links to the PDF creation for a page.
   @authors Aaron Eischeid, Glen Smith
 */
 
 class PdfTagLib {
-
+   
+  LinkGenerator grailsLinkGenerator
     /*
       Creates a PDF creation link for the supplied URL.
       eg. <g:pdf url="/test.gsp" filename="sample.pdf" icon="true"/>
@@ -26,16 +29,18 @@ class PdfTagLib {
     // class attribute is for CSS styling
     String c = attrs['class'] ?: 'pdf'
     if(url){
-      link = new ApplicationTagLib().createLink(url: [controller:'pdf', action:'pdfLink',
-             params: [url: attrs.url] ] )
+      //link = new ApplicationTagLib().createLink(url: [controller:'pdf', action:'pdfLink',
+      //      params: [url: attrs.url] ] )
+       link = grailsLinkGenerator.link(controller: 'pdf', action: 'pdfLink', params:[url: attrs.url], absolute: true)
     }
     //if(template){
       //link = new ApplicationTagLib().createLink(url: [controller:'pdf', action:'pdfLink',
              //params: [template: "${template}"] ] )
     //}
     if(pdfController){
-      link = new ApplicationTagLib().createLink(url: [controller:'pdf', action:'pdfLink',
-             params: [pdfController:"${pdfController}"] ] )
+      //link = new ApplicationTagLib().createLink(url: [controller:'pdf', action:'pdfLink',
+      //       params: [pdfController:"${pdfController}"] ] )
+      link = grailsLinkGenerator.link(controller: 'pdf', action: 'pdfLink', params:[pdfController:"${pdfController}"], absolute: true)
       if(pdfAction) link += "&pdfAction=${pdfAction}"
       if(pdfId) link+= "&pdfId=${pdfId}"
     }
